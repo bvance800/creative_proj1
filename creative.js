@@ -60,22 +60,30 @@ function gamePiece(width, height, color, x, y, speed)
 
 	this.boundCheck = function()
 	{
-		if(this.x > WIDTH)
+		if(myGamePiece.x > WIDTH)
 		{
-			this.x = 0;
+			myGamePiece.x = 0;
 		}
-		else id(this.x < this.width)
+		else if(myGamePiece.x < -myGamePiece.width)
 		{
-			this.x = 400;
+			myGamePiece.x = WIDTH;
+		}
+
+		if(myGamePiece.y > WIDTH)
+		{
+			myGamePiece.y = 0;
+		}
+		else if(myGamePiece.y < -myGamePiece.height)
+		{
+			myGamePiece.y = HEIGHT;
 		}
 	}
 
 	this.update = function(){
-				
+		this.boundCheck();			
 		game.context.fillStyle = color;
 		game.context.fillRect(this.x, this.y, this.width, this.height);
-		boundCheck();
-
+		alert("update()");
 	}
 
 
