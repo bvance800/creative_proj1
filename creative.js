@@ -3,8 +3,14 @@
 var myGamePiece;
 var WIDTH = 400;
 var HEIGHT = 400;
+var LEFT = 37;
+var UP = 38;
+var RIGHT = 39;
+var DOWN = 40;
 
 var game = {	
+	
+	keys : [],
 
 	canvas : document.createElement("canvas"),
 
@@ -16,6 +22,15 @@ var game = {
 		this.context = this.canvas.getContext("2d");
 		document.body.insertBefore(this.canvas, document.body.childNodes[2]);		
 		this.interval = setInterval(updateGame, 20);
+		
+		window.addEventListener('keydown', function(e) {
+			//game.keys = (game.keys || []);		
+			game.keys[e.keyCode] = true;
+		})
+
+		window.addEventListener('keyup', function(e) {
+			game.keys[e.keyCode] = false;
+		})
 	},
 	
 	clear : function(){
@@ -31,31 +46,59 @@ function startGame(){
 	//alert("startGame()");
 	game.start();
 	//alert("second alert startGame()");
-	myGamePiece = new gamePiece(30, 30, "red", 50, 50);
+	myGamePiece = new gamePiece(30, 30, "red", 50, 50, 10);
 
 }
 
-function gamePiece(width, height, color, x, y)
+function gamePiece(width, height, color, x, y, speed)
 {
-
+	this.speed = speed;
 	this.width = width;
 	this.height = height;
 	this.x = x;
 	this.y = y;
 
+	this.boundCheck = function()
+	{
+		if(this.x > WIDTH)
+		{
+			this.x = 0;
+		}
+		else id(this.x < this.width)
+		{
+			this.x = 400;
+		}
+	}
+
 	this.update = function(){
 				
 		game.context.fillStyle = color;
 		game.context.fillRect(this.x, this.y, this.width, this.height);
-
+		boundCheck();
 
 	}
+
+
+}
+
+function keysPressed()
+{
+
+	if(game.keys === undefined)
+	{
+		alert("undefined");
+	}
+	
+	if(game.keys && game.keys[LEFT]){myGamePiece.x-=myGamePiece.speed;}
+	if(game.keys && game.keys[UP]){myGamePiece.y-=myGamePiece.speed;}
+	if(game.keys && game.keys[RIGHT]){myGamePiece.x+=myGamePiece.speed;}
+	if(game.keys && game.keys[DOWN]){myGamePiece.y+=myGamePiece.speed;}
 }
 
 function updateGame()
 {
 	game.clear();
-	myGamePiece.x += 1;
+	keysPressed();
 	myGamePiece.update();
 	
 }
